@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    container_name: erp-new-frontend-production
+    image: erp-new-frontend-production:1.0.0
+    ports:
+      - "5173:5173"
+
+

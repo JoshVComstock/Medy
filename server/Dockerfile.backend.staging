@@ -1,0 +1,28 @@
+# Use the official .NET SDK image as a build stage ..
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /app
+
+# Copy the project files and restore dependencies
+COPY . .
+RUN rm -fR /app/obj
+RUN dotnet restore
+
+# Build the application
+RUN dotnet clean
+RUN dotnet build
+RUN dotnet publish -c Release -o out
+
+# Use the official runtime image for the final stage
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+WORKDIR /app
+
+# Copy the built application
+COPY --from=build /app/out .
+#RUN mkdir -p /app/Uploads
+# Expose the port the app will run on
+EXPOSE 5021
+
+# Set the entry point for the application
+ENTRYPOINT ["dotnet", "server.dll"]
+
+

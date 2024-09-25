@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.staging
+    container_name: erp-new-frontend-staging
+    image: erp-new-frontend-staging:1.0.0
+    ports:
+      - "5073:5073"
+
+

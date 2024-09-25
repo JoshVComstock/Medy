@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "icon": "Contactos",
+    "nombre": "Contactos",
+    "hijos": [
+      {
+        "id": 11,
+        "nombre": "Contactos",
+        "accion": "/dashboard/contacto",
+        "hijos": [
+          {
+            "id": 13,
+            "nombre": "Categorias de contacto",
+            "accion": "/dashboard/categoriacontacto",
+            "hijos": []
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "nombre": "Configuración",
+        "accion": null,
+        "hijos": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "icon": "Configuracion",
+    "nombre": "Configuración",
+    "hijos": []
+  }
+]
