@@ -10,7 +10,7 @@ namespace server.Models
         public required string? Notas { get; set; }
         public int IdPaciente { get; set; }
         public required Paciente Paciente { get; set; }
-        public List<Resultado> Resultado { get; set; } = new List<Resultado>();
+        public Resultado? Resultado { get; set; }
 
 
     }

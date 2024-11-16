@@ -48,7 +48,6 @@ const TablePagination = ({
             : ""}
         </small>
         <div className="flex gap-1">
-          {/* Button to navigate to the first page */}
           <Button
             onClick={() => setCurrentPage(1)}
             disabled={currentPage <= 1}
@@ -56,7 +55,6 @@ const TablePagination = ({
             title="Primera página"
             icon={<IconChevronLeft2 />}
           />
-          {/* Button to navigate to the previous page */}
           <Button
             onClick={() => setCurrentPage((old) => old - 1)}
             disabled={currentPage <= 1}

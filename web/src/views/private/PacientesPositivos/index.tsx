@@ -5,7 +5,6 @@ import PageContainer from "../../../components/common/pageContainer";
 import { ENDPOINTS } from "../../../types/enums/Endpoints";
 import { MODELOS } from "@/types/enums/Modelos";
 import { useAcceso } from "@/components/hooks/useAcceso";
-import { PacienteRes } from "@/types/res/PacienteRes";
 import { ResultadoRes } from "@/types/res/Resultado";
 
 const PacientesPositivos = () => {
@@ -18,7 +17,7 @@ const PacientesPositivos = () => {
   const columns = createColumns<ResultadoRes>([
     {
       header: "Codigo de barras",
-      accessorKey: "CodigoBarra",
+      accessorKey: "codigoBarra",
     },
     {
       header: "Fecha entregado",
@@ -34,7 +33,7 @@ const PacientesPositivos = () => {
     },
     {
       header: "Paciente ",
-      accessorKey: "NobrePaciente",
+      accessorKey: "nombrePaciente",
     },
   ]);
   return (

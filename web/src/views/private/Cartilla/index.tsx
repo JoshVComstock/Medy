@@ -10,7 +10,7 @@ import { MODELOS } from "@/types/enums/Modelos";
 import { useAcceso } from "@/components/hooks/useAcceso";
 import { CartillaFormRes, CartillaRes } from "@/types/res/CartillaRes";
 import { CartillaForm, cartillaSchema } from "./validations/cartilla";
-
+import Formmaps from "./components/formMaps";
 const Cartilla = () => {
   const { res, pushData, modifyData, filterData, getData } = useGet<
     CartillaFormRes[]
@@ -21,7 +21,11 @@ const Cartilla = () => {
   const { canAdd, canDelete, canEdit, canModify, canView } = useAcceso(
     MODELOS.CARTILLA
   );
-
+  const {
+    state: stateMap,
+    openModal: openModalMap,
+    closeModal: closeModalMap,
+  } = useModal<[number, number]>("Seleccionar ubicacion");
   const columns = createColumns<CartillaRes>([
     {
       header: "Codigo de barras",
@@ -29,7 +33,7 @@ const Cartilla = () => {
     },
     {
       header: "Nombre",
-      accessorKey: "paciente",
+      accessorKey: "nombrePaciente",
     },
     {
       header: "Fecha toma de muestra",
@@ -37,7 +41,7 @@ const Cartilla = () => {
     },
     {
       header: "Sexo",
-      accessorKey: "sexo",
+      accessorKey: "sexoPaciente",
     },
 
     {
@@ -62,8 +66,15 @@ const Cartilla = () => {
             fn: (row) => openModal(row),
             on: canModify,
           },
+          {
+            label: "Agregar ubicacion",
+            fn: () => openModalMap(),
+          },
         ]}
       />
+      <Modal state={stateMap}>
+        <Formmaps closeModalMap={closeModalMap} />
+      </Modal>
       <Modal state={state}>
         <Form<CartillaFormRes, CartillaForm>
           item={item}
@@ -95,11 +106,9 @@ const Cartilla = () => {
             // Datos de la Cartilla
 
             codigoBarras: item?.codigoBarras || "",
-
             fechaTomaMuestras: item?.fechaTomaMuestras || "",
             numeroMuestra: item?.numeroMuestra || "",
             transfucion: item?.transfucion || false,
-
             antibioticos: item?.antibioticos || "",
             notas: item?.notas || "",
           }}
@@ -135,9 +144,7 @@ const Cartilla = () => {
         >
           <Form.Column>
             <Form.Input name="codigoBarras" title="Código de Barras" />
-
             <Form.Input name="tratamientoMadre" title="Tratamiento madre" />
-
             <Form.Input name="telefonoMadre" title="Teléfono de la Madre" />
             <Form.Input
               name="telefonoEmergenciaMadre"
@@ -160,6 +167,7 @@ const Cartilla = () => {
               name="detalleDireccionMadre"
               title="Detalle de Dirección de la Madre"
             />
+
             <Form.Input name="enfermedadMadre" title="Enfermedad madre" />
             <Form.Checkbox
               name="tratamientoHipertiroidismo"

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.backend
+    container_name: medisync-backend
+    image: medisync-backend:1.0.0
+    ports:
+      - "32768:80"
+    volumes:
+      - /opt/medisync/Uploads:/app/Uploads

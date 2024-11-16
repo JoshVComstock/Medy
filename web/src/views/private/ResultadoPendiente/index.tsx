@@ -5,31 +5,36 @@ import PageContainer from "../../../components/common/pageContainer";
 import { ENDPOINTS } from "../../../types/enums/Endpoints";
 import { MODELOS } from "@/types/enums/Modelos";
 import { useAcceso } from "@/components/hooks/useAcceso";
-import { ResultadoRes } from "@/types/res/Resultado";
+import { CartillaFormRes, CartillaRes } from "@/types/res/CartillaRes";
 
 const ResultadosPendientes = () => {
-  const { res, getData } = useGet<ResultadoRes[]>(
-    ENDPOINTS.RESULTADO.GETPENDIENTE
+  const { res, getData } = useGet<CartillaFormRes[]>(
+    ENDPOINTS.CARTILLA.RESULTADONULL
   );
 
-  const { canView } = useAcceso(MODELOS.RESULTADOSPENDIENTES);
+  const { canView } = useAcceso(MODELOS.CARTILLA);
 
-  const columns = createColumns<ResultadoRes>([
+  const columns = createColumns<CartillaRes>([
     {
-      header: "Paciente",
-      accessorFn: (row) => row.Cartilla.paciente.nombre,
+      header: "Codigo de barras",
+      accessorKey: "codigoBarras",
     },
     {
-      header: "Fecha entregado",
-      accessorKey: "fechaEntregado",
+      header: "Nombre",
+      accessorKey: "nombrePaciente",
     },
     {
-      header: "Fecha resultado",
-      accessorKey: "fechaResultado",
+      header: "Fecha toma de muestra",
+      accessorKey: "fechaTomaMuestras",
     },
     {
-      header: "Resultado ",
-      accessorKey: "resultadoPaciente",
+      header: "Sexo",
+      accessorKey: "sexoPaciente",
+    },
+
+    {
+      header: "Numero de muestra",
+      accessorKey: "numeroMuestra",
     },
   ]);
   return (

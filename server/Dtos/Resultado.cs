@@ -10,6 +10,8 @@ namespace server.Dtos
         public required string ValorResultado { get; set; }
         public required string ValorReferencia { get; set; }
         public required string? Observacion { get; set; }
+        public required bool Envio { get; set; }
+
         public int IdCartilla { get; set; }
         public int IdLaboratorio { get; set; }
     }

@@ -173,8 +173,130 @@ namespace server.Endpoints
                 await db.SaveChangesAsync();
                 return res.SuccessResponse(Messages.RiMenu.DELETED, "");
             }).RequireAuthorization().WithTags(tag);
-        }
+            /* app.MapGet(baseUrl + "/dashboard", async (DBContext db, ClaimsPrincipal User) =>
+                {
+                    var tokenId = User.FindFirst("Id")?.Value;
+                    if (tokenId == null) return res.BadRequestResponse(Messages.Auth.ERRORTOKEN);
+                    int id = int.Parse(tokenId);
+                    var user = await db.RecUsuario
+                        .Include(ru => ru.RecUsuarioGrupo)
+                            .ThenInclude(rug => rug.Grupo)
+                            .ThenInclude(g => g.RiMenuGrupoRel)
+                            .ThenInclude(rmgr => rmgr.Menu)
+                        .Include(ru => ru.RecUsuarioGrupo)
+                            .ThenInclude(rug => rug.Grupo)
+                            .ThenInclude(g => g.RiAccesoModelo)
+                        .FirstOrDefaultAsync(ru => ru.Id == id);
+                    if (user == null) return res.BadRequestResponse(Messages.RecUsuario.NOTFOUND);
 
+                    var menuIds = user.RecUsuarioGrupo
+                        .Select(rug => rug.Grupo.RiMenuGrupoRel.Select(rmgr => rmgr.Menu.Id))
+                        .SelectMany(ids => ids)
+                        .ToList();
+                    var menus = await db.RiMenu
+                        .OrderBy(m => m.Secuencia)
+                        .Where(m => m.IdPadre == null && menuIds.Contains(m.Id))
+                        .ToListAsync();
+                    var links = new List<ParentLink>();
+                    foreach (var m in menus)
+                    {
+                        var childs = await RecursiveGetLinks(db, menuIds, m);
+                        var link = new ParentLink
+                        {
+                            Id = m.Id,
+                            Nombre = m.Nombre,
+                            Icon = m.PathIcono,
+                            Hijos = childs
+                        };
+                        links.Add(link);
+                    }
+
+                    var accesoIds = user.RecUsuarioGrupo
+                        .SelectMany(rug => rug.Grupo.RiAccesoModelo.Select(ram => ram.Id))
+                        .ToList();
+                    var accesos = await db.RiAccesoModelo
+                        .Where(ram => accesoIds.Contains(ram.Id))
+                        .GetRes()
+                        .ToListAsync();
+
+                    return res.SuccessResponse("Dashboard obtenido correctamente", new
+                    {
+                        Menus = links,
+                        Accesos = accesos
+                    });
+                }).RequireAuthorization().WithTags(tag);
+     */
+            app.MapGet(baseUrl + "/dashboardone", async (DBContext db, ClaimsPrincipal User) =>
+     {
+         // Validar token
+         var tokenId = User.FindFirst("Id")?.Value;
+         if (tokenId == null) return res.BadRequestResponse(Messages.Auth.ERRORTOKEN);
+         if (!int.TryParse(tokenId, out int id)) return res.BadRequestResponse(Messages.Auth.ERRORTOKEN);
+
+         // Obtener usuario con los datos necesarios en una única consulta
+         var user = await db.RecUsuario
+             .Include(ru => ru.RecUsuarioGrupo)
+                 .ThenInclude(rug => rug.Grupo)
+                 .ThenInclude(g => g.RiMenuGrupoRel)
+             .Include(ru => ru.RecUsuarioGrupo)
+                 .ThenInclude(rug => rug.Grupo)
+                 .ThenInclude(g => g.RiAccesoModelo)
+             .FirstOrDefaultAsync(ru => ru.Id == id);
+
+         if (user == null) return res.BadRequestResponse(Messages.RecUsuario.NOTFOUND);
+
+         // Obtener IDs de menús y accesos
+         var menuIds = user.RecUsuarioGrupo
+          .Where(rug => rug.Grupo != null) // Asegúrate de que Grupo no sea null
+          .SelectMany(rug => rug.Grupo.RiMenuGrupoRel
+          .Where(rmgr => rmgr.Menu != null) // Asegúrate de que Menu no sea null
+          .Select(rmgr => rmgr.Menu.Id))
+      .ToList();
+
+         var uniqueIds = new HashSet<int>(menuIds.Where(id => id != null));
+
+         var accesoIds = user.RecUsuarioGrupo
+             .SelectMany(rug => rug.Grupo.RiAccesoModelo.Select(ram => ram.Id))
+             .Distinct()
+             .ToList();
+
+         // Cargar todos los menús necesarios en una sola consulta
+         var allMenus = await db.RiMenu
+             .Where(m => menuIds.Contains(m.Id))
+             .OrderBy(m => m.Secuencia)
+             .ToListAsync();
+
+         // Construir la jerarquía de menús en memoria
+         var menuLookup = allMenus.ToLookup(m => m.IdPadre);
+         var links = BuildMenuHierarchy(menuLookup, null);
+
+         // Cargar accesos en una sola consulta
+         var accesos = await db.RiAccesoModelo
+             .Where(ram => accesoIds.Contains(ram.Id))
+             .GetRes()
+             .ToListAsync();
+
+         // Retornar respuesta
+         return res.SuccessResponse("Dashboard obtenido correctamente", new
+         {
+             Menus = links,
+             Accesos = accesos
+         });
+     }).RequireAuthorization().WithTags(tag);
+        }
+        private static List<ChildLink> BuildMenuHierarchy(ILookup<int?, RiMenu> menuLookup, int? parentId)
+        {
+            return menuLookup[parentId]
+                .Select(menu => new ChildLink
+                {
+                    Id = menu.Id,
+                    Nombre = menu.Nombre,
+                    Padre = "",
+                    Accion = "",
+                    Hijos = BuildMenuHierarchy(menuLookup, menu.Id)
+                })
+                .ToList();
+        }
         private static async Task<List<RiMenuRes>> RecursiveGetMenus(DBContext db, int? padre)
         {
             var menus = await db.RiMenu.OrderBy(m => m.Secuencia).Where(m => m.IdPadre == padre).GetRes().ToListAsync();

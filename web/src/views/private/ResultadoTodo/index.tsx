@@ -15,7 +15,8 @@ const ResultadoTodo = () => {
   const columns = createColumns<ResultadoRes>([
     {
       header: "Paciente",
-      accessorFn: (row) => row.Cartilla.paciente.nombre,
+      accessorKey: "nombrePaciente",
+      
     },
     {
       header: "Fecha entregado",

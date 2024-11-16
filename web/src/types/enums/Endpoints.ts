@@ -485,10 +485,9 @@ enum MANEJOCARTILLA {
   POST = MANEJOCARTILLA.BASE,
   PUT = MANEJOCARTILLA.BASE + "/",
   DELETE = MANEJOCARTILLA.BASE + "/",
-  GETPROVINCIA = MANEJOCARTILLA.BASE+ "/provincia",
-  GETHOSPITAL = MANEJOCARTILLA.BASE+ "/hospital",
-  GETFALTANTE = MANEJOCARTILLA.BASE+ "/faltantes",
-
+  GETPROVINCIA = MANEJOCARTILLA.BASE + "/provincia",
+  GETHOSPITAL = MANEJOCARTILLA.BASE + "/hospital",
+  GETFALTANTE = MANEJOCARTILLA.BASE + "/faltantes",
 }
 enum CARTILLA {
   BASE = "cartilla",
@@ -496,6 +495,7 @@ enum CARTILLA {
   POST = CARTILLA.BASE,
   PUT = CARTILLA.BASE + "/",
   DELETE = CARTILLA.BASE + "/",
+  RESULTADONULL = CARTILLA.BASE + "/cartillaSinResultado",
 }
 enum RESULTADO {
   BASE = "resultado",
@@ -508,6 +508,8 @@ enum RESULTADO {
   GETPENDIENTEENVIO = RESULTADO.BASE + "/resultadoPendienteEnvio",
   POSITIVO = RESULTADO.BASE + "/pacientePositivo",
   NEGATIVO = RESULTADO.BASE + "/pacienteNegativo",
+  DAY = RESULTADO.BASE + "/day",
+  PENDIENTEENVIO = RESULTADO.BASE + "/envioPendientes",
 }
 
 enum PACIENTE {

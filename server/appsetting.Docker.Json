@@ -1,0 +1,18 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "PostgreSQLConnection": "Server=host.docker.internal;Port=5432;Database=pesquisas;User Id=postgres;Password=jv2050dj;",
+    "MongoConnection": "mongodb+srv://mongo:admin@erpbd.hclhkck.mongodb.net/?retryWrites=true&w=majority"
+  },
+  "JWT": {
+    "Issuer": "https://medisync.com",
+    "Audience": "https://medisync.com",
+    "Key": "This is a token secret key for authorization"
+  }
+}

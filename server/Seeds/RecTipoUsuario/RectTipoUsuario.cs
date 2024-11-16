@@ -3,7 +3,7 @@ using server.Models;
 
 namespace server.Seeds
 {
-  public static class Seeds_ERP_RecTipoUsuario
+  public static class Seeds_TipoUsuario
   {
     public static RecTipoUsuario TipoUsuarioData = new()
     {

@@ -99,7 +99,7 @@ namespace server.Endpoints
             {
                 var exit = await db.RecContacto.AnyAsync(e => e.Nombre == ca.Nombre);
                 if (exit) return res.BadRequestResponse(Messages.RecContacto.EXISTS);
-                var me = await db.RecEmpresa.FindAsync(ca.IdEmpresa);
+           
 
                 RecContacto contacto = new()
                 {
@@ -124,7 +124,7 @@ namespace server.Endpoints
                     Longitud = ca.Longitud,
                     Numeracion = ca.Numeracion,
                     TipoContacto = ca.TipoContacto,
-                    Empresa = me,
+      
                     Zona = ca.Zona
                 };
 
@@ -154,10 +154,7 @@ namespace server.Endpoints
                 if (exit) return res.BadRequestResponse(Messages.RecContacto.EXISTS);
                 var contacto = await db.RecContacto.Includes().FirstOrDefaultAsync(c => c.Id == id);
                 if (contacto is null) return res.NotFoundResponse(Messages.RecContacto.NOTFOUND);
-                var em = await db.RecEmpresa.FindAsync(ca.IdEmpresa);
-                if (em is null) return res.NotFoundResponse(Messages.RecContacto.NOTFOUND);
 
-                contacto.Empresa = em;
                 contacto.Nombre = ca.Nombre;
                 contacto.Profesion = ca.Profesion;
                 contacto.NombreDespliegue = ca.NombreDespliegue;

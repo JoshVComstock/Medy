@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import LoginImg from "@assets/images/login.png";
 import { useEnvironment } from "@/context/environment";
 const Image = () => {

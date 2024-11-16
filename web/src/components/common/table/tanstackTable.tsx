@@ -271,46 +271,41 @@ const TanstackTable = forwardRef(
       );
     }
     return (
-      <div className="relative overflow-auto w-full h-full flex flex-col border border-gray-300 justify-between">
+      <div className="relative overflow-auto w-full h-full flex flex-col border bg-white justify-between">
         <table
           ref={tableRef}
-          className="w-full border-separate border-spacing-[1px] isolate table-fixed"
+          className="w-full border-separate border-spacing-0 whitespace-nowrap"
         >
           <thead className="sticky top-0 z-1">
             {table.getHeaderGroups().map((group) => (
-              <tr key={group.id}>
+              <tr key={group.id} >
                 <th
-                  className={thStyleBorder.join(" ")}
-                  style={{
-                    backgroundColor: `${tailwindColors.gray["200"]} dark:bg-gray-800`,
-                    textAlign: "center",
-                    width: "32px",
-                    fontSize: "10px",
-                  }}
+                   className="text-center bg-white px-4 py-3 border-b text-[10px] font-medium text-gray-500"
+                   style={{
+                     width: "32px",
+                   }}
                 >
                   #
                 </th>
                 {group.headers.map((header) => (
                   <th
-                    className={thStyleResize.join(" ")}
-                    style={{
-                      backgroundColor:
-                        header.column.getIsSorted() === "asc"
-                          ? //@ts-ignore
-                            tailwindColors.success[100]
-                          : header.column.getIsSorted() === "desc"
-                          ? //@ts-ignore
-                            tailwindColors.deleted
-                          : undefined,
-                      width: header.getSize(),
-                    }}
+                  className="bg-white px-4 py-3 transition-all duration-200 border-b"
+                  style={{
+                    width: header.getSize(),
+                    backgroundColor:
+                      header.column.getIsSorted() === "asc"
+                        ? "rgba(34, 197, 94, 0.04)"
+                        : header.column.getIsSorted() === "desc"
+                        ? "rgba(239, 68, 68, 0.04)"
+                        : undefined,
+                  }}
                     key={header.id}
                     title={header.column.columnDef.header?.toString()}
                     onClick={(e) => handleThClick(header, e)}
                     onMouseDown={(e) => handleMouseDown(header, e)}
                   >
-                    <div className="flex">
-                      <p className="line-clamp-1">
+                    <div className="flex items-center gap-2 group">
+                      <p className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors duration-200">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -326,11 +321,10 @@ const TanstackTable = forwardRef(
                 ))}
                 {!!controls.length && (
                   <th
-                    className={thStyleBorder.join(" ")}
-                    style={{
-                      backgroundColor: `${tailwindColors.gray["200"]} dark:bg-gray-800`,
-                      width: "160px",
-                    }}
+                  className="bg-white px-4 py-3 border-b text-xs font-medium text-gray-500"
+                  style={{
+                    width: "160px",
+                  }}
                   >
                     Controles
                   </th>

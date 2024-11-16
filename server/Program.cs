@@ -23,6 +23,15 @@ builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddDbContext<DBContext>(options => options.UseNpgsql(connection));
 
+ /* builder.Services.AddDbContext<DBContext>(options =>
+    options.UseNpgsql(connection, npgsqlOptions =>
+    {
+        npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5, // Número máximo de reintentos
+            maxRetryDelay: TimeSpan.FromSeconds(30), // Tiempo máximo entre reintentos
+            errorCodesToAdd: null // Opcional: puedes agregar códigos de error adicionales que quieras manejar
+        );
+    })); */
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
@@ -31,11 +40,9 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
             "http://localhost:80",
             "http://localhost:5173",
-            "http://lks.dyndns.info:5173",
-            "http://lks.dyndns.info:5073",
             "http://localhost:5174",
-            "http://lks.dyndns.info:5173"
-        ).AllowAnyHeader().AllowAnyMethod();
+            "https://medisync-e4231.web.app"
+        ).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
 
@@ -136,7 +143,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Static"
 });
 
-app.MapGet("/", () => "ERP Server").WithTags("#");
+app.MapGet("/", () => "Server").WithTags("#");
 app.MapGet("/common/data", () =>
 {
     var res = new Response();
@@ -160,8 +167,6 @@ app.MapGet("/common/data", () =>
     });
 }).WithTags("#");
 app.AuthEndpoints();
-app.ContableBancoEndpoints();
-app.ProdCategoriaEndpoints();
 app.RiCategoriaModuloEndpoints();
 app.RecContactoCategoriaEndpoints();
 app.RecContactoEndpoints();
@@ -172,23 +177,8 @@ app.WebSocketEndpoints(app);
 app.RecUsuarioEndpoints();
 app.RecTipoUsuarioEndpoints();
 app.RiModeloEndpoints();
-app.RecEmpresaEndpoints();
-app.ProdAtributoEndpoints();
-app.ProdAtributoValorEndpoints();
-app.ProdProductoBaseEndpoints();
-app.UsuarioConfigEndpoint();
-app.ProdProductoEndpoints();
-app.CompraOrdenEndpoints();
-app.VentaOrdenEndpoints();
-app.RecBancoEndpoints();
-app.MonedaEndpoints();
-app.RecContactoBancoEndpoints();
-app.EfectivoEndpoints();
-app.UmUnidadMedidaEndpoints();
 app.UmCategoriaEndpoints();
-app.ProdTarifaEndpoints();
 app.PvConfigEndpoints();
-app.PvCajaEndpoints();
 //pesquisas
 app.CiudadEndpoints();
 app.ProvinciaEndpoints();

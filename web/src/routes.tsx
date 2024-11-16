@@ -8,6 +8,9 @@ import Profile from "./views/private/Profile";
 import IsLogged from "./views/guard/isLogged";
 import { routecomponents } from "./data/routeComponents";
 import DashboardGuards from "./components/layout/guards";
+//import HomeStart from "./views/public/home";
+import Layout from "./views/public/layout";
+import HomePage from "./views/public/home";
 
 function obtenerAcciones(objeto: any): string[] {
   let acciones = [];
@@ -35,8 +38,11 @@ const Routes = () => {
 
   return (
     <RRDRoutes>
-      <Route path="" element={<IsLogged />}>
-        <Route path={ROUTES.INDEX} element={<Login />} />
+      <Route path="" element={<Layout />}>
+        <Route path={ROUTES.INDEX}  element={<HomePage />} />
+      </Route>
+      <Route path="/login" element={<IsLogged />}>
+        <Route path={ROUTES.LOGIN} element={<Login />} />
       </Route>
       <Route path={ROUTES.DASHBOARD} element={<DashboardGuards />}>
         <Route path={ROUTES.INICIO} element={<Home />} />
@@ -48,11 +54,8 @@ const Routes = () => {
             element={routecomponents[routeKey as ROUTES].component}
           />
         ))}
+
         <Route
-          path={ROUTES.COMPRAS_PRODUCTOS_PRODUCTOS_DETALLES + ":id"}
-          element={routecomponents[ROUTES.COMPRAS_PRODUCTOS_PRODUCTOS_DETALLES].component}
-        />
-         <Route
           path={ROUTES.CONTACTO_DETALLE + ":id"}
           element={routecomponents[ROUTES.CONTACTO_DETALLE].component}
         />

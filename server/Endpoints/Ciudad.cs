@@ -41,7 +41,7 @@ namespace server.Endpoints
             {
                 var ciudad = await db.Ciudad.GetRes().ToListAsync();
                 return res.SuccessResponse(Messages.Ciudad.GET, ciudad);
-            }).RequireAuthorization().WithTags(tag);
+            }).WithTags(tag);
 
             app.MapGet(baseUrl + "/all", async (DBContext db) =>
             {

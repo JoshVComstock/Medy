@@ -1,6 +1,6 @@
 import styles from "../dashboard.module.css";
 import PageButton from "./pageButton";
-import ModeButton from "./modeButton";
+//import ModeButton from "./modeButton";
 import { useUser } from "@/context/user";
 import LogoButton from "./logoButton";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ const Left = ({ page, setPage, setOpen, open, openNav }: Props) => {
     <aside
       className={
         styles.aside +
-        " z-50 h-full bg-gray-700 w-20 border-r border-gray-800 flex flex-col justify-between"
+        " z-50 h-full bg-white w-20 border-r flex flex-col justify-between"
       }
     >
       <div className="flex flex-col h-full">
@@ -41,7 +41,7 @@ const Left = ({ page, setPage, setOpen, open, openNav }: Props) => {
           }}
           open={open}
         />
-        <div className="h-full flex flex-col overflow-y-auto no-scrollbar">
+        <div className="h-[90%] flex flex-col overflow-y-auto no-scrollbar">
           {asideData?.map((value) => (
             <PageButton
               key={value.id}

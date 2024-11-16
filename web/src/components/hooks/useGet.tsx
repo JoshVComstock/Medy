@@ -55,9 +55,11 @@ export const useGet = <T,>(
         token
           ? {
               headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
                 Authorization: "Bearer " + token,
               },
+              credentials: "include",
             }
           : undefined
       );

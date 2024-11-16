@@ -12,7 +12,6 @@ namespace server.Models
         public required int LimiteContactos { get; set; }
         public int? IdEmpresa { get; set; }
         public required int IdTipoTerminal { get; set; }
-        public required RecEmpresa RecEmpresa { get; set; }
 
     }
 }

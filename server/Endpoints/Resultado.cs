@@ -5,6 +5,7 @@ using server.Utils;
 using server.Dtos;
 using Microsoft.EntityFrameworkCore;
 using server.Constants;
+using Microsoft.AspNetCore.Mvc;
 
 namespace server.Endpoints
 {
@@ -16,6 +17,7 @@ namespace server.Endpoints
             {
                 Id = c.Id,
                 CodigoBarra = c.Cartilla.CodigoBarras,
+                NombrePaciente = c.Cartilla.Paciente.Nombre,
                 FechaEntregado = c.FechaEntregado,
                 FechaIngreso = c.FechaIngreso,
                 FechaResultado = c.FechaResultado,
@@ -29,7 +31,9 @@ namespace server.Endpoints
                 Estado = c.Estado,
                 FechaCreacion = c.FechaCreacion,
                 FechaModificacion = c.FechaModificacion,
-                NobrePaciente = c.Cartilla.Paciente.Nombre
+                IdLaboratorio = c.IdLaboratorio,
+                IdCartilla = c.IdCartilla,
+                Envio = c.Envio
             };
         }
         public static IQueryable<Resultado> Includes(this IQueryable<Resultado> query)
@@ -51,20 +55,31 @@ namespace server.Endpoints
                 var red = await db.Resultado.GetRes().ToListAsync();
                 return res.SuccessResponse(Messages.Resultado.GET, red);
             }).RequireAuthorization().WithTags(tag);
+            app.MapGet(baseUrl + "/envioPendientes", async (DBContext db) =>
+           {
+               var red = await db.Resultado.Where(c => c.Envio == false).GetRes().ToListAsync();
+               return res.SuccessResponse(Messages.Resultado.GET, red);
+           }).RequireAuthorization().WithTags(tag);
+            app.MapGet(baseUrl + "/day", async (DBContext db) =>
+           {
+               var day = DateTime.UtcNow.Date;
+               var red = await db.Resultado.Where(c => c.FechaCreacion.Date == day).GetRes().ToListAsync();
+               return res.SuccessResponse(Messages.Resultado.GET, red);
+           }).RequireAuthorization().WithTags(tag);
 
             app.MapGet(baseUrl + "/pacientePositivo", async (DBContext db) =>
-{
-    var red = await db.Resultado.Where(m => m.ResultadoPaciente == "POSITIVO").ToListAsync();
-    return res.SuccessResponse(Messages.Resultado.GET, red);
-}).RequireAuthorization().WithTags(tag);
+            {
+                var red = await db.Resultado.Where(m => m.ResultadoPaciente == "POSITIVO").GetRes().ToListAsync();
+                return res.SuccessResponse(Messages.Resultado.GET, red);
+            }).RequireAuthorization().WithTags(tag);
             app.MapGet(baseUrl + "/pacienteNegativo", async (DBContext db) =>
-{
-    var red = await db.Resultado.Where(m => m.ResultadoPaciente == "NEGATIVO").ToListAsync();
-    return res.SuccessResponse(Messages.Resultado.GET, red);
-}).RequireAuthorization().WithTags(tag);
+                {
+                    var red = await db.Resultado.Where(m => m.ResultadoPaciente == "NEGATIVO").GetRes().ToListAsync();
+                    return res.SuccessResponse(Messages.Resultado.GET, red);
+                }).RequireAuthorization().WithTags(tag);
             app.MapGet(baseUrl + "/all", async (DBContext db) =>
             {
-                var red = await db.Resultado.IgnoreQueryFilters().Select(pv => CreateResultadoRes(pv)).ToListAsync();
+                var red = await db.Resultado.IgnoreQueryFilters().GetRes().ToListAsync();
                 return res.SuccessResponse(Messages.Resultado.GET, red);
             }).RequireAuthorization().WithTags(tag);
 
@@ -78,9 +93,11 @@ namespace server.Endpoints
 
             app.MapPost(baseUrl, async (ResultadoDTO c, DBContext db) =>
             {
-                var cartilla = await db.Cartilla.FindAsync(c.IdCartilla);
+                var cartilla = await db.Cartilla
+                .Include(ca => ca.Paciente)
+                .FirstOrDefaultAsync(ca => ca.Id == c.IdCartilla);
                 if (cartilla is null) return res.NotFoundResponse(Messages.Cartilla.NOTFOUND);
-                var lab = await db.Laboratorio.FindAsync(c.IdLaboratorio);
+                var lab = await db.Laboratorio.FirstOrDefaultAsync(ca => ca.Id == c.IdLaboratorio);
                 if (lab is null) return res.NotFoundResponse(Messages.Laboratorio.NOTFOUND);
                 Resultado resultado = new()
                 {
@@ -93,7 +110,8 @@ namespace server.Endpoints
                     Observacion = c.Observacion,
                     ResultadoPaciente = c.ResultadoPaciente,
                     ValorReferencia = c.ValorReferencia,
-                    ValorResultado = c.ValorResultado
+                    ValorResultado = c.ValorResultado,
+                    Envio = false
                 };
                 db.Resultado.Add(resultado);
                 await db.SaveChangesAsync();
@@ -108,6 +126,26 @@ namespace server.Endpoints
                 await db.SaveChangesAsync();
                 return res.SuccessResponse(Messages.Resultado.UPDATED, CreateResultadoRes(resultado));
             }).RequireAuthorization().WithTags(tag);
+            /* app.MapPut(baseUrl + "/envio", async (List<int> ids, [FromBody] ResultadoDTO pv, DBContext db) =>
+            {
+                // Obtener todos los resultados que coincidan con los IDs proporcionados
+                var resultados = await db.Resultado.Where(c => ids.Contains(c.Id)).ToListAsync();
+
+                // Verificar si se encontraron resultados
+                if (!resultados.Any()) return res.NotFoundResponse(Messages.Resultado.NOTFOUND);
+
+                // Actualizar el campo `envio` a true para cada resultado encontrado
+                foreach (var resultado in resultados)
+                {
+                    resultado.Envio = true; // Asumiendo que 'envio' es el campo a actualizar
+                }
+
+                // Guardar los cambios en la base de datos
+                await db.SaveChangesAsync();
+
+                return res.SuccessResponse(Messages.Resultado.UPDATED, resultados.Select(CreateResultadoRes));
+            }).RequireAuthorization().WithTags(tag); */
+
 
             app.MapDelete(baseUrl + "/{id}", async (int id, DBContext db) =>
             {

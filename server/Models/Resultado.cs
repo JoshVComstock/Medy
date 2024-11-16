@@ -12,6 +12,7 @@ namespace server.Models
         public required string? Observacion { get; set; }
         public int IdCartilla { get; set; }
         public int IdLaboratorio { get; set; }
+        public required bool Envio { get; set; } 
         public required Cartilla Cartilla { get; set; }
         public required Laboratorio Laboratorio { get; set; }
     }

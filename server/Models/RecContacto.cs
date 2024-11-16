@@ -31,10 +31,6 @@ namespace server.Models
         public required string Comentario { get; set; }
         public List<RecContactoCategoriaRel> ContactoCategoriaRel { get; set; } = new List<RecContactoCategoriaRel>();
         public List<RecUsuario> RecUsuario { get; set; } = new List<RecUsuario>();
-        public List<RecEmpresa> RecEmpresa { get; set; } = new List<RecEmpresa>();
-        public required RecEmpresa? Empresa { get; set; }
-        public List<CompraOrden> CompraOrden { get; set; } = new List<CompraOrden>();
-        public List<RecContactoBanco> ContactoBancoRel { get; set; } = new List<RecContactoBanco>();
 
     }
 }

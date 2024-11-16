@@ -10,17 +10,17 @@ import { MODELOS } from "@/types/enums/Modelos";
 import { useAcceso } from "@/components/hooks/useAcceso";
 import { ResultadoRes } from "@/types/res/Resultado";
 import { resultadoSchema, ResultadoForm } from "./validations/resultado";
+//import { confirmAlert } from "@/utils/alerts";
+import { useRequest } from "@/components/hooks/useRequest";
+import { alertSuccess } from "@/utils/alertsToast";
 
 const Resultado = () => {
-  const { res, pushData, modifyData, filterData, getData } = useGet<
-    ResultadoRes[]
-  >(ENDPOINTS.RESULTADO.GET);
+  const { res, getData } = useGet<ResultadoRes[]>(ENDPOINTS.RESULTADO.DAY);
+  const { sendRequest } = useRequest();
   const { state, item, openModal, closeModal } = useModal<ResultadoRes>(
     "Formulario de resultado"
   );
-  const { canAdd, canDelete, canEdit, canModify, canView } = useAcceso(
-    MODELOS.RESULTADO
-  );
+  const { canAdd, canView } = useAcceso(MODELOS.RESULTADO);
 
   const columns = createColumns<ResultadoRes>([
     {
@@ -41,10 +41,17 @@ const Resultado = () => {
     },
     {
       header: "Paciente ",
-      accessorKey: "NobrePaciente",
+      accessorKey: "nombrePaciente",
     },
   ]);
-
+  const handleAdd = async (body: ResultadoForm) => {
+    const resResul = await sendRequest<null>(ENDPOINTS.RESULTADO.POST, body);
+    if (resResul) {
+      alertSuccess("Resultado creado");
+      getData();
+      closeModal();
+    }
+  };
   return (
     <PageContainer title="Resultado">
       <TableContainer
@@ -55,13 +62,6 @@ const Resultado = () => {
         add={canAdd(() => openModal())}
         reports={canView}
         reload={getData}
-        controls={[
-          {
-            label: "Modificar",
-            fn: (row) => openModal(row),
-            on: canModify,
-          },
-        ]}
       />
       <Modal state={state}>
         <Form<ResultadoRes, ResultadoForm>
@@ -77,36 +77,10 @@ const Resultado = () => {
             observacion: item?.observacion || "",
             idCartilla: item?.idCartilla || "",
             idLaboratorio: item?.idLaboratorio || "",
+            envio: false,
           }}
           validationSchema={resultadoSchema}
-          post={{
-            route: ENDPOINTS.RESULTADO.POST,
-            onBody: (value) => ({
-              ...value,
-            }),
-            onSuccess: (data) => {
-              pushData(data);
-              closeModal();
-            },
-          }}
-          put={canEdit({
-            route: ENDPOINTS.RESULTADO.PUT + item?.id,
-            onBody: (value) => ({
-              ...value,
-            }),
-            onSuccess: (data) => {
-              modifyData(data, (value) => value.id === data.id);
-              closeModal();
-            },
-          })}
-          del={canDelete({
-            route: ENDPOINTS.RESULTADO.DELETE + item?.id,
-            onSuccess: (data) => {
-              filterData((value) => value.id !== data.id);
-              closeModal();
-            },
-          })}
-           debug
+          post={(data) => handleAdd(data)}
         >
           <Form.Column>
             <Form.Input
@@ -124,11 +98,19 @@ const Resultado = () => {
               title="Fecha de Entrega"
               type="date"
             />
-            <Form.Input
+
+            <Form.Select
               name="resultadoPaciente"
-              title="Resultado del Paciente"
-            />
+              title="Resultado"
+              placeholder="Seleccione un resultado"
+            >
+              <Form.Option value="POSITIVO">POSITIVO</Form.Option>
+              <Form.Option value="NEGATIVO">NEGATIVO</Form.Option>
+              <Form.Option value="SOSPECHOSO">SOSPECHOSO</Form.Option>
+            </Form.Select>
             <Form.Input name="metodo" title="Método" />
+          </Form.Column>
+          <Form.Column>
             <Form.Input name="valorResultado" title="Valor del Resultado" />
             <Form.Input name="valorReferencia" title="Valor de Referencia" />
             <Form.Input name="observacion" title="Observación" />
@@ -136,7 +118,7 @@ const Resultado = () => {
               name="idCartilla"
               optionTextKey="codigoBarras"
               title="Cartilla"
-              route={ENDPOINTS.CARTILLA.GET}
+              route={ENDPOINTS.CARTILLA.RESULTADONULL}
               optionValueKey="id"
               placeholder="Seleccione una cartilla"
               searchable

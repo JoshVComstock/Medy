@@ -8,8 +8,8 @@ import IconPDF from "@assets/icons/iconPDF";
 import IconXLSX from "@assets/icons/iconXLSX";
 import IconBack from "@assets/icons/iconBack";
 import { DownloadTableExcel } from "react-export-table-to-excel";
-import TableFilters from "./tableFilters";
-import IconColumn from "@assets/icons/iconColumn";
+/* import TableFilters from "./tableFilters";
+import IconColumn from "@assets/icons/iconColumn"; */
 import { useTableContext } from "./context/tableContext";
 
 interface Props {
@@ -29,6 +29,7 @@ const TableControls = ({ children }: Props) => {
     buttons,
     reloadCount,
     search,
+    
   } = useTableContext();
 
   //* ◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇ JSX ◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇
@@ -120,6 +121,9 @@ const TableControls = ({ children }: Props) => {
                   Añadir
                 </Button>
               )}
+              {
+              
+              }
             </div>
           </div>
           {search && <TableSearch />}

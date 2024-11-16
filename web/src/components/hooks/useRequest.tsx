@@ -46,6 +46,7 @@ export const useRequest = () => {
           Authorization: token ? `Bearer ${token}` : "",
           ...thisOptions.headers,
         },
+        credentials:"include",
         body,
       });
     } else {
@@ -57,6 +58,8 @@ export const useRequest = () => {
           Authorization: token ? "Bearer " + token : "",
           ...thisOptions.headers,
         },
+        credentials:"include",
+
         body:
           thisOptions.method !== "GET" ? JSON.stringify(body || {}) : undefined,
       });
@@ -96,6 +99,8 @@ export const useRequest = () => {
         Accept: "application/json",
         ...thisOptions.headers,
       },
+      credentials:"include",
+
       body:
         thisOptions.method !== "GET" ? JSON.stringify(body || {}) : undefined,
     });

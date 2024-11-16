@@ -3,7 +3,7 @@ using server.Models;
 
 namespace server.Seeds
 {
-  public static class Seeds_ERP_RecGrupo
+  public static class Seeds_Grupo
   {
     public static RecGrupo GrupoTodos = new()
     {

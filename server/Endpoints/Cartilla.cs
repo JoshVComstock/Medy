@@ -21,13 +21,31 @@ namespace server.Endpoints
                 Notas = car.Notas,
                 NumeroMuestra = car.NumeroMuestra,
                 Transfucion = car.Transfucion,
-                Paciente = car.Paciente.Nombre,
                 IdUsrCreacion = car.IdUsrCreacion,
                 IdUsrModificacion = car.IdUsrModificacion,
                 Estado = car.Estado,
                 FechaCreacion = car.FechaCreacion,
                 FechaModificacion = car.FechaModificacion,
-                Sexo = car.Paciente.Sexo
+                //paciente
+                NombrePaciente = car.Paciente.Nombre,
+                SexoPaciente = car.Paciente.Sexo,
+                EdadGestacionalDiaPaciente = car.Paciente.EdadGestacionalDia,
+                EdadGestacionalSemanaPaciente = car.Paciente.EdadGestacionalSemana,
+                FechaNacimientoPaciente = car.Paciente.FechaNacimiento,
+                PesoNacimientoPaciente = car.Paciente.PesoNacimiento,
+                NacimientoTerminoPaciente = car.Paciente.NacimientoTermino,
+                //madre
+                NombreMadre = car.Paciente.Madre.Nombre,
+                CiMadre = car.Paciente.Madre.Ci,
+                DireccionMadre = car.Paciente.Madre.Direccion,
+                DetalleDireccionMadre = car.Paciente.Madre.DetalleDireccion,
+                TelefonoMadre = car.Paciente.Madre.Telefono,
+                TelefonoEmergenciaMadre = car.Paciente.Madre.TelefonoEmergencia,
+                TratamientoHipertiroidismo = car.Paciente.Madre.TratamientoHipertiroidismo,
+                TratamientoHiportiroidismo = car.Paciente.Madre.TratamientoHiportiroidismo,
+                TratamientoMadre = car.Paciente.Madre.Tratamiento,
+                EnfermedadMadre = car.Paciente.Madre.Enfermedad,
+                IdProvincia = car.Paciente.Madre.IdProvincia
             };
         }
         public static IQueryable<Cartilla> Includes(this IQueryable<Cartilla> query)
@@ -62,6 +80,11 @@ namespace server.Endpoints
                 return await db.Cartilla.Where(car => car.Id == id).GetRes().FirstOrDefaultAsync() is CartillaRes e
                     ? res.SuccessResponse(Messages.Cartilla.FIND, e)
                     : res.NotFoundResponse(Messages.Cartilla.NOTFOUND);
+            }).RequireAuthorization().WithTags(tag);
+            app.MapGet(baseUrl + "/cartillaSinResultado", async (DBContext db) =>
+            {
+                var resultado = await db.Cartilla.Where(car => car.Resultado == null).GetRes().ToListAsync();
+                return res.SuccessResponse(Messages.Cartilla.GET, resultado);
             }).RequireAuthorization().WithTags(tag);
 
             app.MapPost(baseUrl, async (CartillaDTO car, DBContext db) =>

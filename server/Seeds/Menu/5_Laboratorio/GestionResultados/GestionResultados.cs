@@ -23,7 +23,7 @@ namespace server.Seeds
             PathPadre = "",
             Secuencia = 1
         };
-        public static RiMenu MenuTodosResultados = new()
+       /*  public static RiMenu MenuTodosResultados = new()
         {
             Nombre = "Todos los resultados",
             Accion = "/dashboard/todo-resultados",
@@ -31,11 +31,11 @@ namespace server.Seeds
             PathIcono = null,
             PathPadre = "",
             Secuencia = 1
-        };
+        }; */
 
         public static List<RiMenu> List = new List<RiMenu>()
     {
-        MenuTodosResultados,
+       /*  MenuTodosResultados, */
         MenuPendientesResultado,
         MenuPendientesEnvio
     };

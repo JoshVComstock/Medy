@@ -11,6 +11,7 @@ export interface ResultadoRes {
   valorReferencia: string;
   observacion?: string;
   idCartilla: number;
+  envio:boolean;
   idLaboratorio: number;
   Cartilla: CartillaRes;
 }

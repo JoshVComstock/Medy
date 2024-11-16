@@ -155,11 +155,12 @@ async function getUser(): Promise<{
     serverAPI + AUTH.ME,
     token
       ? {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
       : undefined
   );
   if (response.status === 401) {
@@ -181,12 +182,14 @@ async function getUser(): Promise<{
   const tableConfigResponse = await fetch(
     serverAPI + ENDPOINTS.CONFIG.GET,
     token
-      ? {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
+      ?{
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+        credentials: "include",
+      }
       : undefined
   );
   if (tableConfigResponse.status === 404) {
@@ -212,11 +215,12 @@ async function getMenus() {
     serverAPI + ENDPOINTS.MENU.DASHBOARD,
     token
       ? {
-          headers: {
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
+        headers: {
+          
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
       : undefined
   );
   if (!menuResponse.ok) {

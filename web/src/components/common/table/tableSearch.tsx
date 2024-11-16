@@ -3,13 +3,13 @@ import Input from "../inputs/input";
 import Button from "../button/button";
 import IconX from "@assets/icons/iconX";
 import IconFilterAdd from "@assets/icons/iconFilterAdd";
-import IconBookmark from "@assets/icons/iconBookmark";
+/* import IconBookmark from "@assets/icons/iconBookmark";
 import IconSave from "@assets/icons/iconSave";
+import Dropdown from "../dropdown/dropdown";
+import IconTrash from "@assets/icons/iconTrash"; */
 import { SaveSearchType } from "@/types/interfaces/SaveSearch";
 import { ColumnDef } from "@tanstack/react-table";
-import Dropdown from "../dropdown/dropdown";
-import { useLang } from "@/context/lang";
-import IconTrash from "@assets/icons/iconTrash";
+
 import { useEffect, useState } from "react";
 import { useTableContext } from "./context/tableContext";
 
@@ -24,15 +24,14 @@ const TableSearch = () => {
     handleSelectFilter,
     saveSearch,
     selectFilter,
-    handleDeleteMarker,
+   /*  handleDeleteMarker,
     handleLoadMarker,
     handleSaveMarker,
     selectedMarker,
-    config,
+    config, */
     dateFilter,
     setDateFilter,
   } = useTableContext();
-  const { translate } = useLang();
 
   //* ◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇ Selected for mentions @ ◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇
   const [selected, setSelected] = useState("");
@@ -100,11 +99,11 @@ const TableSearch = () => {
   return (
     <div className="flex justify-between gap-4">
       <div className="flex">
-        <div className="w-32">
+        <div className="w-40">
           <select
             value={selectFilter}
             onChange={handleSelectFilter}
-            className="w-full px-2 py-1 pr-10 text-sm border outline-none border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 bg-white disabled:bg-gray-100 dark:bg-gray-300"
+            className="w-full px-2 py-1 pr-1 mr-5 rounded-lg text-sm border outline-none border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 bg-white disabled:bg-gray-100 dark:bg-gray-300"
           >
             {columns.map((v: ColumnDef<any, any>) => (
               <option key={v.header?.toString()} value={v.header?.toString()}>
@@ -117,7 +116,7 @@ const TableSearch = () => {
         <div key={selectFilter} className="flex w-80">
           {inputType === "date" && (
             <>
-              <div className="max-w-40">
+              <div className="max-w-40 ">
                 <Input
                   size="small"
                   icon={<IconSearch />}
@@ -135,7 +134,7 @@ const TableSearch = () => {
                   type="date"
                 />
               </div>
-              <div className="max-w-40">
+              <div className="max-w-40 ">
                 <Input
                   size="small"
                   icon={<IconSearch />}
@@ -170,7 +169,7 @@ const TableSearch = () => {
 
           {inputType === "justOneDate" && (
             <>
-              <div className="max-w-40">
+              <div className="max-w-40 ">
                 <Input
                   size="small"
                   icon={<IconSearch />}
@@ -193,7 +192,7 @@ const TableSearch = () => {
             <select
               value={filterValue}
               onChange={(e) => setFilter(e.target.value)}
-              className="w-full px-2 py-1 pr-10 text-sm border outline-none border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 bg-white disabled:bg-gray-100 dark:bg-gray-300"
+              className="w-full px-2 py-1 pr-10 text-sm border outline-none  border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 bg-white disabled:bg-gray-100 dark:bg-gray-300"
             >
               <option value="">Seleccionar...</option>
               {dateSelect?.map((v) => (
@@ -265,7 +264,6 @@ const TableSearch = () => {
             {displaySaveSearchName(v)}
           </Button>
         ))}
-        
       </div>
     </div>
   );

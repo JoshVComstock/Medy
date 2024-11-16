@@ -112,7 +112,7 @@ const Input = ({
   }
 
   const stylesInput = [
-    "w-full px-2 pr-10 text-sm border outline-none border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 bg-white disabled:bg-gray-100 dark:bg-gray-500 dark:text-white",
+    "w-full px-2 pr-10 text-sm border outline-none border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all duration-300 bg-white disabled:bg-gray-100 dark:bg-gray-500 dark:text-white rounded-xl",
   ];
   switch (size) {
     case "base":

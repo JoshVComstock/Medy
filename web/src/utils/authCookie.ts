@@ -1,22 +1,25 @@
-const cookieName = "erp_token";
+const cookieName = "pesquisasToken";
 
 export const setAuthCookie = (token: string) => {
-  document.cookie = `${cookieName}=${JSON.stringify(
+  localStorage.setItem(cookieName, token); /* = `${cookieName}=${JSON.stringify(
     token
-  )}; path=/; samesite=strict`;
+  )}; path=/; samesite=strict`; */
 };
 
 export const getAuthCookie = (): string | null => {
-  const cookie = getC(cookieName);
-  if (!cookie) return null;
-  return JSON.parse(cookie);
+  const cookietoken = localStorage.getItem(cookieName);
+  /*   const cookie = getC(cookieName);
+   */ if (!cookietoken) return null;
+  return cookietoken;
 };
 
 export const deleteAuthCookie = () => {
-  document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  localStorage.removeItem(cookieName);
+  /*   document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+   */
 };
 
-function getC(cname: string) {
+/* function getC(cname: string) {
   let name = cname + "=";
   let ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {
@@ -29,4 +32,4 @@ function getC(cname: string) {
     }
   }
   return "";
-}
+} */

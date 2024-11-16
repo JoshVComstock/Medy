@@ -23,20 +23,20 @@ namespace server.Seeds
             PathPadre = "",
             Secuencia = 1,
         };
-        public static RiMenu MenuTodosPacientes = new()
-        {
-            Nombre = "Todos",
-            Accion = "/dashboard/paciente-todos",
-            Padre = Seeds_GestionClinica.MenuPacientes,
-            PathIcono = null,
-            PathPadre = "",
-            Secuencia = 1,
-        };
+        /*      public static RiMenu MenuTodosPacientes = new()
+             {
+                 Nombre = "Todos",
+                 Accion = "/dashboard/paciente-todos",
+                 Padre = Seeds_GestionClinica.MenuPacientes,
+                 PathIcono = null,
+                 PathPadre = "",
+                 Secuencia = 1,
+             }; */
         public static List<RiMenu> List = new List<RiMenu>()
         {
         MenuPacienteNegativo,
         MenuPacientePositivo,
-        MenuTodosPacientes
+        /* MenuTodosPacientes */
         };
     }
 }

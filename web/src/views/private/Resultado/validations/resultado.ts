@@ -13,6 +13,7 @@ export const resultadoSchema = Yup.object({
   observacion: Yup.string().nullable(),
   idCartilla: Yup.number().required("Cartilla es requerida"),
   idLaboratorio: Yup.number().required("Laboratorio es requerido"),
+  envio: Yup.boolean(),
 });
 
 export interface ResultadoForm extends Yup.InferType<typeof resultadoSchema> {}

@@ -2,12 +2,12 @@ using server.Models;
 
 namespace server.Seeds
 {
-  public static class Seeds_ERP_RiAccesoModelo
+  public static class Seeds_AccesoModelo
   {
     public static RiAccesoModelo RelTodosGruposModelo = new()
     {
-      Grupo = Seeds_ERP_RecGrupo.GrupoTodos,
-      Modelo = Seeds_ERP_RiModelo.RiModeloGrupos,
+      Grupo = Seeds_Grupo.GrupoTodos,
+      Modelo = Seeds_Modelo.RiModeloGrupos,
       Crear = true,
       Editar = true,
       Eliminar = true,

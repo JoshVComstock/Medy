@@ -8,6 +8,7 @@ import { useTableConfig } from "./hooks/useTableConfig";
 import { MarkersType, SaveSearchType } from "@/types/interfaces/SaveSearch";
 import { alertSuccess } from "@/utils/alertsToast";
 import { TableContext } from "./context/tableContext";
+//import Button from "../button/button";
 
 export interface TableButton {
   title: string;
@@ -35,6 +36,7 @@ interface Props<T> {
   fixKey?: keyof T;
   rowStyle?: (row: T) => CSSProperties;
   search?: boolean;
+  buttonAdd?:()=>void;
 }
 
 export type TableView = "table" | "PDF";
@@ -53,6 +55,7 @@ const TableContainer = <T,>({
   fixKey,
   rowStyle,
   search = true,
+  
 }: Props<T>) => {
   //* ◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇ States ◇◆◇◆◇◆◇◆◇◆◇◆◇◆◇
   const [sorting, setSorting] = useState<any[]>([]);

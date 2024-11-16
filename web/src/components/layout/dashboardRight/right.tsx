@@ -25,7 +25,7 @@ const Right = ({ page, open, openNav, setOpen }: Props) => {
 
   const classNames = [
     styles.right,
-    "z-50 transition-all duration-300 overflow-hidden bg-gray-700 fixed h-full left-20",
+    "z-50 transition-all duration-300 overflow-hidden bg-white h-full fixed left-20 rounded-e-md",
   ];
   if (open) {
     classNames.push("w-64");
@@ -62,7 +62,7 @@ const Right = ({ page, open, openNav, setOpen }: Props) => {
             icon={<IconX />}
           />
         </div>
-        <h2 className="text-gray-400 whitespace-nowrap">
+        <h2 className="text-primary-500 whitespace-nowrap text-lg">
           <div className="flex flex-col items-center">
             <p>{pageSelected?.nombre}</p>
             {pageSelected?.nombre == "Contabilidad" && (
@@ -77,7 +77,7 @@ const Right = ({ page, open, openNav, setOpen }: Props) => {
         </h2>
       </header>
       <div className="px-4 flex flex-col gap-1" key={pageSelected?.nombre}>
-        <p className="w-[calc(256px_-_32px)] text-center leading-6   text-gray-400 text-sm">
+        <p className="w-[calc(256px_-_32px)] text-center leading-6   text-gray-500 text-sm">
           {pages.length === 0 && "Por el momento no puedes hacer nada aquí"}
         </p>
         {pages.map((link, i) => (

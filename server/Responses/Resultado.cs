@@ -3,6 +3,7 @@ namespace server.Responses
     public class ResultadoRes : BaseRes
     {
         public required int Id { get; set; }
+        public required string NombrePaciente { get; set; }
         public required DateOnly FechaIngreso { get; set; }
         public required DateOnly FechaResultado { get; set; }
         public required DateOnly FechaEntregado { get; set; }
@@ -11,9 +12,9 @@ namespace server.Responses
         public required string ValorResultado { get; set; }
         public required string ValorReferencia { get; set; }
         public required string? Observacion { get; set; }
-        public int IdCartilla { get; set; }
-        public int IdLaboratorio { get; set; }
+        public required int IdCartilla { get; set; }
+        public required int IdLaboratorio { get; set; }
         public required string CodigoBarra { get; set; }
-        public required string NobrePaciente { get; set; }
+        public required bool Envio { get; set; }
     }
 }

@@ -21,7 +21,6 @@ namespace server.Endpoints
                 FechaCreacion = pc.FechaCreacion,
                 FechaModificacion = pc.FechaModificacion,
                 Nombre = pc.Nombre,
-                Empresa = RecEmpresaExt.CreateEmpresaInfoRes(pc.RecEmpresa),
                 IdTipoTerminal = pc.IdTipoTerminal,
                 LimiteContactos = pc.LimiteContactos,
                 LimiteProducto = pc.LimiteProducto
@@ -29,8 +28,7 @@ namespace server.Endpoints
         }
         public static IQueryable<PvConfig> Includes(this IQueryable<PvConfig> query)
         {
-            return query
-            .Include(e => e.RecEmpresa);
+            return query;
         }
         public static IQueryable<PvConfigRes> GetRes(this IQueryable<PvConfig> query)
         {
@@ -64,15 +62,14 @@ namespace server.Endpoints
 
             app.MapPost(baseUrl, async (PvConfigDTO ca, DBContext db) =>
             {
-                var cm = await db.RecEmpresa.FindAsync(ca.IdEmpresa);
-                if (cm is null) return res.NotFoundResponse(Messages.PvConfig.NOTEMPRESA);
+             
                 PvConfig Config = new()
                 {
                     Nombre = ca.Nombre,
                     IdTipoTerminal = ca.IdTipoTerminal,
                     LimiteContactos = ca.LimiteContactos,
                     LimiteProducto = ca.LimiteProducto,
-                    RecEmpresa = cm
+                  
                 };
                 db.PvConfig.Add(Config);
                 await db.SaveChangesAsync();
@@ -83,12 +80,9 @@ namespace server.Endpoints
             {
                 var Config = await db.PvConfig.Includes().FirstOrDefaultAsync(pc => pc.Id == id);
                 if (Config is null) return res.NotFoundResponse(Messages.PvConfig.NOTFOUND);
-                var cm = await db.RecEmpresa.FindAsync(ca.IdEmpresa);
-                if (cm is null) return res.NotFoundResponse(Messages.PvConfig.NOTEMPRESA);
                 Config.IdTipoTerminal = ca.IdTipoTerminal;
                 Config.LimiteContactos = ca.LimiteContactos;
                 Config.LimiteProducto = ca.LimiteProducto;
-                Config.RecEmpresa = cm;
                 await db.SaveChangesAsync();
                 return res.SuccessResponse(Messages.PvConfig.UPDATED, CreateRes(Config));
             }).RequireAuthorization().WithTags(tag);

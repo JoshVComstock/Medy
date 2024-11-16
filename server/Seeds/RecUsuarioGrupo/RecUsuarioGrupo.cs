@@ -3,12 +3,12 @@ using server.Models;
 
 namespace server.Seeds
 {
-  public static class Seeds_ERP_RecUsuarioGrupo
+  public static class Seeds_UsuarioGrupo
   {
     public static RecUsuarioGrupo GrupoAdministradorTodos = new()
     {
-      Grupo = Seeds_ERP_RecGrupo.GrupoTodos,
-      Usuario = Seeds_ERP_RecUsuario.UsuarioAdministrador,
+      Grupo = Seeds_Grupo.GrupoTodos,
+      Usuario = Seeds_Usuario.UsuarioAdministrador,
       Estado = States.ACTIVE,
       IdUsrCreacion = null,
       IdUsrModificacion = null

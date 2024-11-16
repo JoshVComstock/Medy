@@ -31,7 +31,7 @@ const PacientesNegativos = () => {
     },
     {
       header: "Paciente ",
-      accessorKey: "NobrePaciente",
+      accessorKey: "nombrePaciente",
     },
   ]);
   return (

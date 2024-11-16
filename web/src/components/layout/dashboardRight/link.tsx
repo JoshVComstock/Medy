@@ -35,10 +35,10 @@ const Link = ({
 
   const active = pathname === to || isActiveRoute(childrens);
   const classNames = [
-    "peer block text-sm py-2 rounded-md px-2 text-gray-400 transition-all duration-300 whitespace-nowrap flex justify-between",
+    "peer block text-sm py-2 rounded-md px-2 text-gray-500 transition-all duration-300 whitespace-nowrap flex justify-between hover:text-primary-500 hover:",
   ];
   if (active) {
-    classNames.push("text-white");
+    classNames.push("text-primary-500");
   }
 
   if (disabled) {
@@ -49,9 +49,9 @@ const Link = ({
       </a>
     );
   }
-    classNames.push("hover:bg-gray-600");
+    classNames.push("hover:bg-white");
 
-  classNames.push("peer-hover:bg-gray-600");
+  classNames.push("peer-hover:bg-white");
 
   const hasChildren = childrens.length > 0;
   return (
@@ -95,7 +95,7 @@ const Link = ({
 
       {hasChildren && (
         <Expandable expand={open}>
-          <div className="pt-1 bg-gray-700 rounded-md shadow-xl flex flex-col gap-1">
+          <div className="pt-1 bg-white rounded-md shadow-xl flex flex-col gap-1">
             {childrens.map((link, i) => (
               <Link
                 key={i}

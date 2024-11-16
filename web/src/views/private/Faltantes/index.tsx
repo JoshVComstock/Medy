@@ -15,7 +15,7 @@ import {
 } from "../ProvinciaCartilla/validations/provinciaCartilla";
 
 const Faltantes = () => {
-  const { res, getData, modifyData, pushData } = useGet<ProvinciaCartillaRes[]>(
+  const { res, getData, modifyData } = useGet<ProvinciaCartillaRes[]>(
     ENDPOINTS.MANEJOCARTILLA.GETFALTANTE
   );
   const { canView, canModify, canEdit } = useAcceso(MODELOS.PROVINCIACARTILLA);
@@ -90,7 +90,7 @@ const Faltantes = () => {
             idCentro: item?.idCentro || "",
             recibidoPor: item?.recibidoPor || "",
             telefono: item?.telefono || "",
-            tipoManejo: "Provincia",
+            tipoManejo: item?.tipoManejo,
           }}
           validationSchema={provinciaCartillaSchema}
           put={canEdit({
